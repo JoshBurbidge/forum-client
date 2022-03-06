@@ -11,7 +11,6 @@ import NextLink from "next/link"
 
 export async function getServerSideProps(ctx) {
   const url = process.env.NEXT_PUBLIC_serverDomain + "/posts/all";
-  console.log(url);
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
 
@@ -38,7 +37,7 @@ export async function getServerSideProps(ctx) {
 
 
 export default function Home(props) {
-  console.log(props);
+  //console.log(props);
   const [currentPosts, setCurrentPosts] = useState(props.posts);
 
   let postsList = currentPosts.map(post => {
@@ -51,8 +50,8 @@ export default function Home(props) {
     return newPosts;
   }
 
+  //console.log(useContext(UserContext))
   // const { loggedIn } = useContext(UserContext).user;
-  // console.log(loggedIn)
 
   return (
     <>

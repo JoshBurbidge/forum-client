@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
 
   let currentUser = { loggedIn: false }
   // if (cookies.userId) state = { username: "something", loggedIn: true };
-  let [user, setUser] = useState()
+  let [user, setUser] = useState() // maybe set this based on user cookie
 
   useEffect(() => {
     if (pageProps.protected && !user) {
@@ -43,11 +43,12 @@ function MyApp({ Component, pageProps }) {
       })
         .then(res => {
           // console.log(res.data)
-          const { loggedIn, username } = res.data;
+          const { loggedIn, username, id } = res.data;
           if (!loggedIn) { // redirect if not logged in
+            //setUser({ loggedIn: false, username: null })
             router.push('/login');
           } else {
-            setUser({ loggedIn: loggedIn, username: username });
+            setUser({ loggedIn: loggedIn, username: username, userId: id });
           }
         })
         .catch(err => {

@@ -19,15 +19,18 @@ export default function NewPost(props) {
   const [content, setContent] = useState("");
   const router = useRouter();
 
+  const { userId } = useContext(UserContext).user
+
   // TODO set correct user id
   const handleSubmit = async function (e) {
+    e.preventDefault();
     const res = await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/posts/new', {
       title: title,
       content: content,
-      userId: 1
+      userId: userId
     }, { withCredentials: true });
     console.log(res);
-
+    router.push('/');
   }
   // const [loading, setLoading] = useState(false)
   // const user = useContext(UserContext).user;
