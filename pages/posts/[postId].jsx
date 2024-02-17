@@ -4,7 +4,7 @@ import axios from "axios";
 
 export async function getServerSideProps(ctx) {
   const { params } = ctx;
-  const res = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/posts/byId/' + params.postId)
+  const res = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/posts/' + params.postId)
 
   const post = res.data;
   return {

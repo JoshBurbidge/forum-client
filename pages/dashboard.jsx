@@ -10,11 +10,14 @@ export async function getServerSideProps() {
 }
 
 export default function Dashboard(props) {
-  const user = useContext(UserContext);
+  const {user} = useContext(UserContext);
 
-  return (<>
+  console.log
+
+  return (
+  <>
     <p>Dashboard</p>
     <p>user: {user.username}</p>
-
-  </>)
+  </>
+  )
 }

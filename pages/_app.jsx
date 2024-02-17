@@ -16,7 +16,6 @@ import { useEffect, useState } from 'react';
 function MyApp({ Component, pageProps }) {
   const [cookies, setCookie, removeCookie] = useCookies([])
   const router = useRouter();
-  // console.log(pageProps)
 
   const theme = createTheme({
     palette: {
@@ -26,27 +25,25 @@ function MyApp({ Component, pageProps }) {
       }
     }
   });
-  // theme.palette.primary.bg = blue[100]
-  // console.log(theme)
 
-  let currentUser = { loggedIn: false }
-  // if (cookies.userId) state = { username: "something", loggedIn: true };
-  let [user, setUser] = useState() // maybe set this based on user cookie
+  console.log(pageProps)
+
+  const currentUser = { loggedIn: false }
+  const [user, setUser] = useState() // maybe set this based on user cookie
 
   useEffect(() => {
-    if (pageProps.protected && !user) {
-
-      console.log('protected')
+    if (!user && pageProps.page !== 'login') {
+      
+      console.log('checking user')
       // get current user from server
       axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
         withCredentials: true,
       })
         .then(res => {
-          // console.log(res.data)
           const { loggedIn, username, id } = res.data;
           if (!loggedIn) { // redirect if not logged in
             //setUser({ loggedIn: false, username: null })
-            router.push('/login');
+            router.push('/login'); // dont redirect unless necessary
           } else {
             setUser({ loggedIn: loggedIn, username: username, userId: id });
           }

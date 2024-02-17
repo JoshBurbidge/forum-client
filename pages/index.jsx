@@ -8,25 +8,10 @@ import { UserContext } from '../components/UserContext';
 import NextLink from "next/link"
 
 
-
 export async function getServerSideProps(ctx) {
-  const url = process.env.NEXT_PUBLIC_serverDomain + "/posts/all";
+  const url = process.env.NEXT_PUBLIC_serverDomain + "/posts";
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
-
-  const { req, res } = ctx;
-  // console.log("cookie: ", getUserIdCookie(ctx));
-
-  // const meResponse = await axios.get(process.env.NEXT_PUBLIC_serverDomain + '/users/me', {
-  //   withCredentials: true,
-  //   headers: {
-  //     cookie: getUserIdCookie(req)
-  //   }
-  // });
-
-  // let { loggedIn, username } = meResponse.data;
-  // if (username === undefined) username = null;
-  // console.log(meResponse.data);
 
   return {
     props: {
@@ -40,12 +25,12 @@ export default function Home(props) {
   //console.log(props);
   const [currentPosts, setCurrentPosts] = useState(props.posts);
 
-  let postsList = currentPosts.map(post => {
+  const postsList = currentPosts.map(post => {
     return <PostCard post={post} key={post.id} />
   });
 
   async function getNextPage() {
-    const res = await fetch(process.env.NEXT_PUBLIC_serverDomain + '/posts/all?offset=' + postsList.length);
+    const res = await fetch(process.env.NEXT_PUBLIC_serverDomain + '/posts?offset=' + postsList.length);
     const newPosts = await res.json();
     return newPosts;
   }
@@ -55,7 +40,6 @@ export default function Home(props) {
 
   return (
     <>
-
       <Container >
         {/* {loggedIn && */}
         <NextLink href={'/posts/new'}>

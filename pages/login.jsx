@@ -5,6 +5,15 @@ import { useRouter } from 'next/router'
 import { useCookies } from "react-cookie";
 import { UserContext } from "../components/UserContext";
 
+export async function getServerSideProps() {
+
+  return {
+    props: {
+      page: 'login'
+    }
+  }
+}
+
 
 export default function Login(props) {
   const [username, setUsername] = useState("");
