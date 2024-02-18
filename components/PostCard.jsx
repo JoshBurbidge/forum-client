@@ -5,7 +5,6 @@ import { useTheme } from "@mui/material";
 
 
 export default function Post(props) {
-  // console.log(props);
   // const theme = useTheme()
   const [hover, setHover] = useState(false);
 
