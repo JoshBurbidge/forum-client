@@ -1,14 +1,10 @@
-import { Box, Button, Container, Stack } from '@mui/material'
+import {  Button, Container, Stack } from '@mui/material';
 import PostCard from '../components/PostCard';
-import axios from 'axios'
-import { getUserIdCookie } from '../util/cookie';
 import ArrowButton from '../components/ArrowButton';
-import { useState, useContext } from 'react';
-import { UserContext } from '../components/UserContext';
-import NextLink from "next/link"
+import { useState } from 'react';
+import NextLink from "next/link";
 
-
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps() {
   const url = process.env.NEXT_PUBLIC_serverDomain + "/posts";
   const postsRes = await fetch(url);
   const allPosts = await postsRes.json();
@@ -20,13 +16,11 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-
 export default function Home(props) {
-  //console.log(props);
   const [currentPosts, setCurrentPosts] = useState(props.posts);
 
   const postsList = currentPosts.map(post => {
-    return <PostCard post={post} key={post.id} />
+    return <PostCard post={post} key={post.id} />;
   });
 
   async function getNextPage() {
@@ -35,17 +29,12 @@ export default function Home(props) {
     return newPosts;
   }
 
-  //console.log(useContext(UserContext))
-  // const { loggedIn } = useContext(UserContext).user;
-
   return (
     <>
       <Container >
-        {/* {loggedIn && */}
         <NextLink href={'/posts/new'}>
           <Button variant='contained' sx={{ mt: 3 }}>New Post</Button>
         </NextLink>
-        {/* } */}
 
         <Stack paddingY={3} spacing={3}>
           {postsList}
@@ -56,5 +45,5 @@ export default function Home(props) {
         </Stack>
       </Container>
     </>
-  )
+  );
 }

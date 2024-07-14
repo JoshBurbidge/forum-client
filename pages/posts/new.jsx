@@ -1,45 +1,41 @@
-import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import { useContext, useState } from "react";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import axios from "axios";
-import { UserContext } from "../../components/UserContext";
 import { useRouter } from "next/router";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export async function getServerSideProps() {
-
-
   return {
     props: {
       protected: true
     }
-  }
+  };
 }
 
-export default function NewPost(props) {
+export default function NewPost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const router = useRouter();
 
-  const { userId } = useContext(UserContext).user
+  const auth0 = useAuth0();
 
-  // TODO set correct user id
   const handleSubmit = async function (e) {
     e.preventDefault();
-    const res = await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/posts/new', {
+    const token = await auth0.getAccessTokenSilently();
+
+    const res = await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/posts', {
       title: title,
       content: content,
-      userId: userId
-    }, { withCredentials: true });
+      username: auth0.user.name
+    }, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     console.log(res);
     router.push('/');
-  }
-  // const [loading, setLoading] = useState(false)
-  // const user = useContext(UserContext).user;
-  // console.log(user)
-  // if (user.loggedIn === false) {
-  //   router.push("/login")
-  // }
-
-  // if (!user || user.loggedIn === false) return <></>
+  };
 
   return (<>
     <Container sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>

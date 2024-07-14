@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../components/UserContext";
+import {  useEffect, useState } from "react";
 import axios from "axios";
 import { Typography } from "@mui/material";
 import Post from "../components/PostCard";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export async function getServerSideProps() {
   return {
@@ -10,27 +10,26 @@ export async function getServerSideProps() {
       protected: true
     }
   };
-
-
 }
 
-export default function Dashboard(props) {
-  const {user} = useContext(UserContext);
+export default function Dashboard() {
+  const {user} = useAuth0();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     async function fetch() {
-      const {data: userPosts} = await axios.get(`${process.env.NEXT_PUBLIC_serverDomain}/users/${user.userId}/posts`);
+      const {data: userPosts} = await axios.get(`${process.env.NEXT_PUBLIC_serverDomain}/users/${user.name}/posts`);
       setPosts(userPosts);
     }
-    fetch();
-
-  }, [user.userId]);
+    if (user) {
+      fetch();
+    }
+  }, [user]);
 
   return (
     <>
       <Typography>Dashboard</Typography>
-      <Typography>user: {user.username}</Typography>
+      <Typography>User: {user.name}</Typography>
       {posts.map(post => (
         <Post post={post} key={post.id}></Post>
       ))}
