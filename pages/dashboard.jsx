@@ -7,13 +7,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 export async function getServerSideProps() {
   return {
     props: {
-      // protected: true
+      protected: true
     }
   };
 }
 
 export default function Dashboard() {
-  const {user, isAuthenticated, isLoading} = useAuth0();
+  const {user} = useAuth0();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -26,11 +26,7 @@ export default function Dashboard() {
     }
   }, [user]);
 
-  if (isLoading) {
-    return <div>Loading ...</div>;
-  }
-
-  return isAuthenticated && (
+  return (
     <>
       <Typography>Dashboard</Typography>
       <Typography>User: {user.name}</Typography>

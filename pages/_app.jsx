@@ -7,15 +7,12 @@ import Layout from '../components/Layout';
 import { CookiesProvider } from "react-cookie";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blue } from "@mui/material/colors";
-import axios from 'axios';
-import { useRouter } from 'next/router';
 import { UserContext } from '../components/UserContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
+import Auth from './auth';
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -26,9 +23,6 @@ function MyApp({ Component, pageProps }) {
   });
 
   const [user, setUser] = useState(); // maybe set this based on user cookie
-
-  // make a loading component
-  // if (pageProps.protected && !user) return <></>;
 
   return (
     <>
@@ -43,9 +37,11 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <UserContext.Provider value={{ user, setUser }}>
             <CookiesProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <Auth protected={pageProps.protected}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </Auth>
             </CookiesProvider>
           </UserContext.Provider>
         </ThemeProvider>

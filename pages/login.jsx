@@ -1,7 +1,7 @@
 import { TextField, Box, Button, Container, Typography } from "@mui/material";
 import axios from 'axios';
 import { useState, useContext } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { useCookies } from "react-cookie";
 import { UserContext } from "../components/UserContext";
 
@@ -11,7 +11,7 @@ export async function getServerSideProps() {
     props: {
       page: 'login'
     }
-  }
+  };
 }
 
 
@@ -25,19 +25,19 @@ export default function Login(props) {
 
 
   const login = async () => {
-    console.log({ username: username, password: pass })
+    console.log({ username: username, password: pass });
     return await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/users/login', {
       username: username,
       password: pass
     }, { withCredentials: true });
-  }
+  };
 
   const handleSubmit = function (e) {
     e.preventDefault();
     login()
       .then(res => {
         console.log(res);
-        const { username } = res.data.user
+        const { username } = res.data.user;
         setUser({ username: username, loggedIn: true });
         setCookie('test', 'abc');
         router.push('/');
@@ -49,7 +49,7 @@ export default function Login(props) {
           setError(error.message);
         }
       });
-  }
+  };
 
   return (
     <Container component='main' maxWidth="xs">
@@ -75,5 +75,5 @@ export default function Login(props) {
         </Box>
       </Box>
     </Container >
-  )
+  );
 }

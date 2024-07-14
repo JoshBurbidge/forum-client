@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 export async function getServerSideProps() {
   return {
     props: {
-      // protected: true
+      protected: true
     }
   };
 }
