@@ -1,11 +1,11 @@
-import { Box, Button, Container, Stack } from '@mui/material'
+import { Box, Button, Container, Stack } from '@mui/material';
 import PostCard from '../components/PostCard';
-import axios from 'axios'
+import axios from 'axios';
 import { getUserIdCookie } from '../util/cookie';
 import ArrowButton from '../components/ArrowButton';
 import { useState, useContext } from 'react';
 import { UserContext } from '../components/UserContext';
-import NextLink from "next/link"
+import NextLink from "next/link";
 
 
 export async function getServerSideProps(ctx) {
@@ -26,7 +26,7 @@ export default function Home(props) {
   const [currentPosts, setCurrentPosts] = useState(props.posts);
 
   const postsList = currentPosts.map(post => {
-    return <PostCard post={post} key={post.id} />
+    return <PostCard post={post} key={post.id} />;
   });
 
   async function getNextPage() {
@@ -56,5 +56,5 @@ export default function Home(props) {
         </Stack>
       </Container>
     </>
-  )
+  );
 }
