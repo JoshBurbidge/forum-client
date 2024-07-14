@@ -7,8 +7,6 @@ import Layout from '../components/Layout';
 import { CookiesProvider } from "react-cookie";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blue } from "@mui/material/colors";
-import { UserContext } from '../components/UserContext';
-import { useState } from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import Auth from './auth';
 
@@ -22,8 +20,6 @@ function MyApp({ Component, pageProps }) {
     }
   });
 
-  const [user, setUser] = useState(); // maybe set this based on user cookie
-
   return (
     <>
       <Auth0Provider
@@ -35,15 +31,13 @@ function MyApp({ Component, pageProps }) {
         }}
       >
         <ThemeProvider theme={theme}>
-          <UserContext.Provider value={{ user, setUser }}>
-            <CookiesProvider>
-              <Auth protected={pageProps.protected}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </Auth>
-            </CookiesProvider>
-          </UserContext.Provider>
+          <CookiesProvider>
+            <Auth protected={pageProps.protected}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </Auth>
+          </CookiesProvider>
         </ThemeProvider>
       </Auth0Provider>
     </>
