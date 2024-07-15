@@ -1,12 +1,26 @@
-import { Box } from "@mui/material";
+import { Box, } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useState } from "react";
 
-export default function ArrowButton(props) {
+export default function ArrowButton({onClick}) {
+  const [hover, setHover] = useState(false);
+
   return (
-    <Box display={'flex'} justifyContent={'center'}>
-      <Box borderRadius={'50%'} height={'60px'} width={'60px'} bgcolor={'lightblue'} border={"solid black"}
-        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={props.onClick}>
-        <img src="/chevron.svg" height={'70%'}></img>
-      </Box>
+    <Box
+      display={'flex'}
+      justifyContent={'center'}
+      alignItems={'center'}
+      component={'button'}
+      height={'50px'}
+      bgcolor={'primary.bg'}
+      borderRadius={1}
+      borderColor={hover ? 'black' : 'transparent'}
+      sx={{cursor: 'pointer', borderWidth: '1px'}}
+      onClick={onClick}
+      onMouseEnter={() => setHover(!hover)}
+      onMouseLeave={() => setHover(!hover)}
+    >
+      <KeyboardArrowDownIcon fontSize="large"/>
     </Box>
   );
 }
