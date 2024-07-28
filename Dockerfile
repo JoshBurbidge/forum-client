@@ -7,13 +7,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
-COPY components ./components
-COPY pages ./pages
-COPY utils ./utils
-COPY public ./public
-COPY styles ./styles
-COPY next.config.js ./
-COPY .env* ./
+COPY . .
 RUN npm run build
 
 FROM base AS runner
@@ -22,7 +16,6 @@ WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
