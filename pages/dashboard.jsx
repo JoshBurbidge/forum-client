@@ -3,6 +3,7 @@ import axios from "axios";
 import { Typography } from "@mui/material";
 import Post from "../components/PostCard";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getServerDomainForBrowser } from "../utils/request-util";
 
 export async function getServerSideProps() {
   return {
@@ -18,7 +19,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetch() {
-      const {data: userPosts} = await axios.get(`${process.env.NEXT_PUBLIC_serverDomain}/users/${user.name}/posts`);
+      // TODO: refactor to use ServerSideProps
+      const {data: userPosts} = await axios.get(`${getServerDomainForBrowser()}/users/${user.name}/posts`);
       setPosts(userPosts);
     }
     if (user) {

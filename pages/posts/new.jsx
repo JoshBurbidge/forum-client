@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useAuth0 } from "@auth0/auth0-react";
+import { getServerDomainForBrowser } from "../../utils/request-util";
 
 export async function getServerSideProps() {
   return {
@@ -23,7 +24,7 @@ export default function NewPost() {
     e.preventDefault();
     const token = await auth0.getAccessTokenSilently();
 
-    const res = await axios.post(process.env.NEXT_PUBLIC_serverDomain + '/posts', {
+    const res = await axios.post(getServerDomainForBrowser() + '/posts', {
       title: title,
       content: content,
       username: auth0.user.name

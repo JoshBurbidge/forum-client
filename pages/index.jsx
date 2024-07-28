@@ -3,6 +3,7 @@ import PostCard from '../components/PostCard';
 import ArrowButton from '../components/ArrowButton';
 import { useState } from 'react';
 import NextLink from "next/link";
+import { getServerDomainForBrowser } from '../utils/request-util';
 
 export async function getServerSideProps() {
   const url = process.env.NEXT_PUBLIC_serverDomain + "/posts";
@@ -24,7 +25,7 @@ export default function Home(props) {
   });
 
   async function getNextPage() {
-    const res = await fetch(process.env.NEXT_PUBLIC_serverDomain + '/posts?offset=' + postsList.length);
+    const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + postsList.length);
     const newPosts = await res.json();
     return newPosts;
   }
