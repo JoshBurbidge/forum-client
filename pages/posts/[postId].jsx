@@ -3,6 +3,7 @@ import { Box, Button, ButtonGroup, CircularProgress, Grid, TextField, Typography
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { getServerDomainForBrowser } from "../../utils/request-util";
 
 export async function getServerSideProps(ctx) {
   const { params } = ctx;
@@ -30,7 +31,7 @@ export default function Post({post}) {
     setLoading(true);
     const token = await getAccessTokenSilently();
 
-    await axios.put(`${process.env.NEXT_PUBLIC_serverDomain}/posts/${post.id}`, {
+    await axios.put(`${getServerDomainForBrowser()}/posts/${post.id}`, {
       content: content
     }, {
       headers: {
