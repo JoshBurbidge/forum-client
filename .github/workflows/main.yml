@@ -12,28 +12,28 @@ env:
   ECR_REPOSITORY_NAME: forum-client
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      # - run: npm run test
-      - run: npm run build
-      - run: npm prune --omit=dev
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            lib
-            node_modules
-          if-no-files-found: error
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - run: npm ci
+  #     # - run: npm run test
+  #     - run: npm run build
+  #     - run: npm prune --omit=dev
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: build-artifacts
+  #         path: |
+  #           lib
+  #           node_modules
+  #         if-no-files-found: error
   deploy:
     name: Deploy
     needs: build
@@ -60,10 +60,10 @@ jobs:
       with:
         registries: 575737149124
         mask-password: "true"
-    - name: Populate build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
+    # - name: Populate build artifacts
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: build-artifacts
     - name: Build, tag, and push image to Amazon ECR
       id: build-publish
       shell: bash
