@@ -18,10 +18,10 @@ resource "aws_iam_role" "task_exec_role" {
 }
 
 data "aws_iam_policy" "default_task_exec_policy" {
-  name = "AmazonECSTaskExecutionPolicy"
+  name = "AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "test-attach" {
+resource "aws_iam_role_policy_attachment" "task_role_attachemnt" {
   role       = aws_iam_role.task_exec_role.name
   policy_arn = data.aws_iam_policy.default_task_exec_policy.arn
 }

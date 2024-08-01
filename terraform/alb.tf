@@ -7,9 +7,9 @@ data "aws_lb_listener" "main_lb_http_listener" {
   port              = 80
 }
 
-resource "aws_lb_listener_rule" "forum_server_forward_rule" {
+resource "aws_lb_listener_rule" "forum_client_forward_rule" {
   listener_arn = data.aws_lb_listener.main_lb_http_listener.arn
-  priority     = 1
+  # priority     = 1
 
   action {
     type             = "forward"
@@ -17,7 +17,6 @@ resource "aws_lb_listener_rule" "forum_server_forward_rule" {
   }
 
   condition {
-    // maybe change this to have an app prefix or something
     path_pattern {
       values = ["*"]
     }

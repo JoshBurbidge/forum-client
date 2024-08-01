@@ -6,7 +6,7 @@ variable "git_commit_sha" {
 variable "ecr_repository_name" {
   description = "ECR repository name that stores the images for ECS"
   type        = string
-  default     = "forum-server"
+  default     = "forum-client"
 }
 
 variable "alb_name" {
