@@ -36,7 +36,7 @@ jobs:
   #         if-no-files-found: error
   deploy:
     name: Deploy
-    needs: build
+    # needs: build
     concurrency: client-deploy
     runs-on: ubuntu-latest
     environment: production
