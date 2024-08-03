@@ -21,7 +21,7 @@ resource "aws_ecs_cluster_capacity_providers" "example" {
 resource "aws_lb_target_group" "forum_client_tg" {
   name        = "forum-client-tg"
   port        = 3001
-  protocol    = "HTTP"
+  protocol    = "HTTPS"
   target_type = "ip"
   vpc_id      = data.aws_vpc.default_vpc.id
   tags        = local.tags

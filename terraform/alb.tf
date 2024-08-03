@@ -2,13 +2,31 @@ data "aws_lb" "main_lb" {
   name = var.alb_name
 }
 
-data "aws_lb_listener" "main_lb_http_listener" {
+resource "aws_lb_listener" "main_lb_https_listener" {
   load_balancer_arn = data.aws_lb.main_lb.arn
-  port              = 80
+  port              = "443"
+  protocol          = "HTTPS"
+  certificate_arn   = data.aws_acm_certificate.cert.arn
+
+  default_action {
+    type = "fixed-response"
+    fixed_response {
+      status_code  = 200
+      content_type = "text/plain"
+      message_body = "HTTPS listener default action"
+    }
+  }
+
+  tags = local.tags
 }
 
+# data "aws_lb_listener" "main_lb_http_listener" {
+#   load_balancer_arn = data.aws_lb.main_lb.arn
+#   port              = 80
+# }
+
 resource "aws_lb_listener_rule" "forum_client_forward_rule" {
-  listener_arn = data.aws_lb_listener.main_lb_http_listener.arn
+  listener_arn = aws_lb_listener.main_lb_https_listener.arn
   # priority     = 1
 
   action {
@@ -21,4 +39,6 @@ resource "aws_lb_listener_rule" "forum_client_forward_rule" {
       values = ["*"]
     }
   }
+
+  tags = local.tags
 }
