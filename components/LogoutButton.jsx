@@ -5,7 +5,7 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <button onClick={() => logout({ logoutParams: { returnTo: 'http://localhost:3001' } })}>
+    <button onClick={() => logout({ logoutParams: { returnTo: process.env.NEXT_PUBLIC_REDIRECT_URI } })}>
       Log Out
     </button>
   );
