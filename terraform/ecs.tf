@@ -61,7 +61,7 @@ resource "aws_ecs_service" "service" {
   # ip must be target because this service is awsvpc network
   # Your load balancer subnet configuration must include all Availability Zones that your container instances reside in. (subnets within the given VPC)
   load_balancer {
-    target_group_arn = aws_lb_target_group.forum_client_tg.arn
+    target_group_arn = aws_lb_target_group.forum_client_tg_http.arn
     container_name   = local.app_name
     container_port   = 3001
   }
