@@ -32,7 +32,7 @@ resource "aws_lb_target_group" "forum_client_tg" {
 }
 
 resource "aws_lb_target_group" "forum_client_tg_http" {
-  name        = "forum-client-tg"
+  name        = "forum-client-tg-http"
   port        = 3001
   protocol    = "HTTP"
   target_type = "ip"
