@@ -43,9 +43,12 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{github.sha}}
       run: |
+        export PREV_TAG=$(git rev-parse HEAD~1)
         echo $ECR_REGISTRY
         echo $ECR_REPOSITORY_NAME
         echo $IMAGE_TAG
+        echo $PREV_TAG
+        docker pull "$ECR_REGISTRY/$REPOSITORY_NAME:$PREV_TAG"
         docker build . -f Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG"
         docker push "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG"
         echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY_NAME"
