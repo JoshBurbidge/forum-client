@@ -21,10 +21,6 @@ jobs:
         shell: bash
     steps:
     - uses: actions/checkout@v4
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
     - uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::575737149124:role/forum-client-deploy
@@ -52,7 +48,7 @@ jobs:
         echo $ECR_REPOSITORY_NAME
         echo $IMAGE_TAG
         echo $PREV_TAG
-        docker pull "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$PREV_TAG"
+        docker pull "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$PREV_TAG" || echo "failed to pull previous image"
         docker build . -f Dockerfile -t "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG"
         docker push "$ECR_REGISTRY/$ECR_REPOSITORY_NAME:$IMAGE_TAG"
         echo "IMAGE $IMAGE_TAG is pushed to $ECR_REGISTRY/$ECR_REPOSITORY_NAME"
