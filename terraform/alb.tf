@@ -37,3 +37,22 @@ resource "aws_lb_listener_rule" "forum_client_forward_rule" {
 
   tags = local.tags
 }
+
+resource "aws_route53_record" "main_lb_dns" {
+  name    = "zzzyx.click"
+  zone_id = "Z0424378XVXHOFVZNJ5G"
+  type    = "A"
+  # ttl     = 60
+  # records = [data.aws_lb.main_lb.dns_name]
+
+  alias {
+    name                   = data.aws_lb.main_lb.dns_name
+    zone_id                = data.aws_lb.main_lb.zone_id
+    evaluate_target_health = true
+  }
+}
+
+import {
+  to = aws_route53_record.main_lb_dns
+  id = "Z0424378XVXHOFVZNJ5G_zzzyx.click_A"
+}
