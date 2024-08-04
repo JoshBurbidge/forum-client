@@ -31,6 +31,19 @@ resource "aws_lb_target_group" "forum_client_tg" {
   }
 }
 
+resource "aws_lb_target_group" "forum_client_tg_http" {
+  name        = "forum-client-tg"
+  port        = 3001
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = data.aws_vpc.default_vpc.id
+  tags        = local.tags
+  health_check {
+    interval = 60
+    path     = "/"
+  }
+}
+
 resource "aws_ecs_service" "service" {
   name            = local.app_name
   launch_type     = "FARGATE"

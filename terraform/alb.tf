@@ -31,7 +31,7 @@ resource "aws_lb_listener_rule" "forum_client_forward_rule_http" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.forum_client_tg.arn
+    target_group_arn = aws_lb_target_group.forum_client_tg_http.arn
   }
 
   condition {
