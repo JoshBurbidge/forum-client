@@ -27,7 +27,7 @@ resource "aws_lb_listener" "main_lb_https_listener" {
 
 resource "aws_lb_listener_rule" "forum_client_forward_rule" {
   listener_arn = aws_lb_listener.main_lb_https_listener.arn
-  # priority     = 1
+  priority     = 3
 
   action {
     type             = "forward"
