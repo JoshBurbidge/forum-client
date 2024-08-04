@@ -18,19 +18,6 @@ resource "aws_ecs_cluster_capacity_providers" "example" {
 
 # this target group should point to the container in the task
 # outside, we create a LB with listener that points to this TG
-# resource "aws_lb_target_group" "forum_client_tg" {
-#   name        = "forum-client-tg"
-#   port        = 3001
-#   protocol    = "HTTPS"
-#   target_type = "ip"
-#   vpc_id      = data.aws_vpc.default_vpc.id
-#   tags        = local.tags
-#   health_check {
-#     interval = 60
-#     path     = "/"
-#   }
-# }
-
 resource "aws_lb_target_group" "forum_client_tg_http" {
   name        = "forum-client-tg-http"
   port        = 3001

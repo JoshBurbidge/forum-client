@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
         domain="dev-ez2f8ejiacjig1qh.us.auth0.com"
         clientId="iYl0gPTSSSAtrQbNVgGVi7nGY07tNznu"
         authorizationParams={{
-          redirect_uri: 'http://localhost:3001',
+          redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URI,
           audience: 'forum-api'
         }}
       >
