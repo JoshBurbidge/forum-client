@@ -31,10 +31,10 @@ jobs:
         terraform init
         terraform fmt -check
         terraform plan -input=false -destroy \
-          -var 'ecr_repository_name=$REPOSITORY_NAME' \
+          -var "ecr_repository_name=$REPOSITORY_NAME" \
           -var "git_commit_sha=${{github.sha}}"
       working-directory: ./terraform
     - name: Terraform Apply
       run: terraform apply -auto-approve -input=false -destroy \
-          -var 'ecr_repository_name=$REPOSITORY_NAME' -var "git_commit_sha=${{github.sha}}"
+          -var "ecr_repository_name=$REPOSITORY_NAME" -var "git_commit_sha=${{github.sha}}"
       working-directory: ./terraform
