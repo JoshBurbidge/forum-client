@@ -1,7 +1,7 @@
 import {  Box, Button, Container, Stack } from '@mui/material';
 import PostCard from '../components/PostCard';
 import ArrowButton from '../components/ArrowButton';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NextLink from "next/link";
 import { getServerDomainForBrowser } from '../utils/request-util';
 
@@ -36,9 +36,6 @@ export default function Home(props) {
       ([entry]) => {
         console.log(entry);
         setIsIntersecting(entry.isIntersecting);
-        // if (entry.isIntersecting) {
-        //   getNextPage(setCurrentPosts, postsList.length);
-        // }
       },
       {}
     );
@@ -52,23 +49,14 @@ export default function Home(props) {
     return <PostCard post={post} key={post.id} />;
   });
 
-  // const getNextPage = async () => {
-  //   const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + postsList.length);
-  //   const newPosts = await res.json();
-  //   setCurrentPosts(c => c.concat(newPosts));
-  // };
-  const isFetchingRef = useRef(false);
-  const cachedGetNexPage = useCallback(getNextPage, [postsList.length]);
 
   useEffect(() => {
-    console.log('useEffect', isIntersecting, isFetchingRef.current, postsList.length);
+    console.log('useEffect', isIntersecting, postsList.length);
     async function fetchPosts() {
       if (!loading) {
-        // isFetchingRef.current = true;
         setLoading(true);
         await getNextPage(setCurrentPosts, postsList.length);
         setLoading(false);
-        // isFetchingRef.current = false;
       }
     }
     if (isIntersecting && !loading) {
