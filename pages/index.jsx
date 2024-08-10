@@ -33,7 +33,6 @@ export default function Home(props) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log(entry);
         setIsIntersecting(entry.isIntersecting);
       },
       {
@@ -52,7 +51,6 @@ export default function Home(props) {
 
 
   useEffect(() => {
-    console.log('useEffect', isIntersecting, postsList.length);
     async function fetchPosts() {
       if (!loading) {
         setLoading(true);
