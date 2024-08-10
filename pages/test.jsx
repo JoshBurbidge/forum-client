@@ -35,3 +35,8 @@ export default function Test() {
     </Box>
   );
 }
+
+// detect viewport intersection with bottom element
+// on intersection, fetch more
+// if fetch is empty, stop fetching
+// maybe: check intersectionRect y/top value to determine if it's intersecting at the bottom or top

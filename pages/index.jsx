@@ -1,7 +1,7 @@
-import {  Button, Container, Stack } from '@mui/material';
+import {  Box, Button, Container, Stack } from '@mui/material';
 import PostCard from '../components/PostCard';
 import ArrowButton from '../components/ArrowButton';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import NextLink from "next/link";
 import { getServerDomainForBrowser } from '../utils/request-util';
 
@@ -19,6 +19,23 @@ export async function getServerSideProps() {
 
 export default function Home(props) {
   const [currentPosts, setCurrentPosts] = useState(props.posts);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        console.log(entry);
+        setIsIntersecting(entry.isIntersecting);
+      },
+      {}
+    );
+    observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
+
 
   const postsList = currentPosts.map(post => {
     return <PostCard post={post} key={post.id} />;
@@ -27,8 +44,16 @@ export default function Home(props) {
   async function getNextPage() {
     const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + postsList.length);
     const newPosts = await res.json();
-    return newPosts;
+    setCurrentPosts(c => c.concat(newPosts));
   }
+
+  const cachedGetNexPage = useCallback(getNextPage, [postsList.length]);
+
+  useEffect(() => {
+    if (isIntersecting) {
+      cachedGetNexPage();
+    }
+  }, [isIntersecting]);
 
   return (
     <>
@@ -39,10 +64,14 @@ export default function Home(props) {
 
         <Stack paddingY={3} spacing={3}>
           {postsList}
-          <ArrowButton onClick={async () => {
-            const newposts = await getNextPage();
-            setCurrentPosts(currentPosts.concat(newposts));
-          }} />
+          <ArrowButton/>
+          <Box
+            visibility={'hidden'}
+            height={0}
+            ref={ref}
+          >
+            {'bottom detector'}
+          </Box>
         </Stack>
       </Container>
     </>
