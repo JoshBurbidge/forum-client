@@ -31,13 +31,14 @@ export default function Home(props) {
   const ref = useRef(null);
 
   useEffect(() => {
-    console.log('useEffect');
     const observer = new IntersectionObserver(
       ([entry]) => {
         console.log(entry);
         setIsIntersecting(entry.isIntersecting);
       },
-      {}
+      {
+        rootMargin: '200px'
+      }
     );
     observer.observe(ref.current);
 
