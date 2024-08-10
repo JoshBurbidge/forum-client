@@ -5,6 +5,6 @@
 
 .child-two {
   transition: all ease-in 1s;
-  transform: translateX(150%);
-  opacity: 0;
+  /* transform: translateX(150%); */
+  /* opacity: 0; */
 }
