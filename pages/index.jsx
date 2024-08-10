@@ -17,17 +17,28 @@ export async function getServerSideProps() {
   };
 }
 
+const getNextPage = async (setCurrentPosts, offset) => {
+  const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + offset);
+  const newPosts = await res.json();
+  setCurrentPosts(c => c.concat(newPosts));
+};
+
 export default function Home(props) {
   const [currentPosts, setCurrentPosts] = useState(props.posts);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const ref = useRef(null);
 
   useEffect(() => {
+    console.log('useEffect');
     const observer = new IntersectionObserver(
       ([entry]) => {
         console.log(entry);
         setIsIntersecting(entry.isIntersecting);
+        // if (entry.isIntersecting) {
+        //   getNextPage(setCurrentPosts, postsList.length);
+        // }
       },
       {}
     );
@@ -41,19 +52,33 @@ export default function Home(props) {
     return <PostCard post={post} key={post.id} />;
   });
 
-  async function getNextPage() {
-    const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + postsList.length);
-    const newPosts = await res.json();
-    setCurrentPosts(c => c.concat(newPosts));
-  }
-
+  // const getNextPage = async () => {
+  //   const res = await fetch(getServerDomainForBrowser() + '/posts?offset=' + postsList.length);
+  //   const newPosts = await res.json();
+  //   setCurrentPosts(c => c.concat(newPosts));
+  // };
+  const isFetchingRef = useRef(false);
   const cachedGetNexPage = useCallback(getNextPage, [postsList.length]);
 
   useEffect(() => {
-    if (isIntersecting) {
-      cachedGetNexPage();
+    console.log('useEffect', isIntersecting, isFetchingRef.current, postsList.length);
+    async function fetchPosts() {
+      if (!loading) {
+        // isFetchingRef.current = true;
+        setLoading(true);
+        await getNextPage(setCurrentPosts, postsList.length);
+        setLoading(false);
+        // isFetchingRef.current = false;
+      }
+    }
+    if (isIntersecting && !loading) {
+      fetchPosts();
     }
   }, [isIntersecting]);
+  // fetches, sets ref back to false, then executes useeffect again
+  // before the render has happened, so it's still intersecting
+  // So, I don't want it to re-execute after posts length changes, I only want
+  // to re-execute on intersection change
 
   return (
     <>
