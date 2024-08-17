@@ -30,11 +30,13 @@ export default function Post(props) {
     <NextLink href={"/posts/" + props.post.id} passHref>
       <Card onMouseEnter={() => toggleHover()} onMouseLeave={() => toggleHover()}
         ref={ref}
+        id={`post-${props.post.id}`}
         sx={{
           border: 1,
           borderColor: hover ? 'black' : 'transparent',
-          transition: 'all ease-in 0.3s;',
-          opacity: isIntersecting ? 1 : 0
+          transition: 'all ease-in 0.2s;',
+          opacity: isIntersecting ? 1 : 0,
+          transform: isIntersecting ? 'scale(1)' : 'scaleX(1.3)'
         }}
       >
         <Typography pl={1} variant="subtitle2">
